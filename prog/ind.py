@@ -4,24 +4,24 @@
 # Опишите рекурсивную функцию, которая по заданным вещественному х и целому n
 # вычисляет величину x^n.
 
-def recursive_function(x, n):
-    """
-    Рекурсивная функция вычисляющая x^n
-    """
-    if n == 0:
-        return 1
-    elif n < 0:
-        return 1 / recursive_function(x, abs(n))
-    else:
-        return x * recursive_function(x, n-1)
+def check_brackets(string, idx=0, open_brackets=0):
+    # Базовый случай: достигнут конец строки
+    if idx == len(string):
+        # Если все скобки сбалансированы, количество открывающих и закрывающих скобок равно
+        return open_brackets == 0
+    # Если открывающая скобка, увеличиваем счетчик открытых скобок
+    if string[idx] == '(':
+        return check_brackets(string, idx + 1, open_brackets + 1)
+    # Если закрывающая скобка, уменьшаем счетчик открытых скобок
+    elif string[idx] == ')':
+        # Если закрывающей скобки не может быть без соответствующей открывающей
+        if open_brackets == 0:
+            return False
+        return check_brackets(string, idx + 1, open_brackets - 1)
+    # Пропускаем другие символы
+    return check_brackets(string, idx + 1, open_brackets)
 
-
-if __name__ == '__main__':
-    x, n = tuple(
-        map(
-            int,
-            input("Введите 2 числа х и n через пробел ").split()
-        )
-    )
-    x_n = recursive_function(x, n)
-    print("{}^{} = {}".format(x, n, x_n))
+# Примеры использования
+print(check_brackets("((()))"))
+print(check_brackets("(()))"))
+print(check_brackets("())("))
